@@ -1,0 +1,17 @@
+name: End-to-End Tests
+on: [push]
+
+jobs:
+  release:
+    name: Run TestCafe Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - run: npm ci
+      - run: npm run build
+      - uses: DevExpress/testcafe-action@latest
+        with:
+          args: 'chrome:headless tests --app "npm run serve -- -c-1 -s"'
